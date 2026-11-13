@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Field Manual — Galactic Conquest</title>
+    <link rel="stylesheet" href="../assets/site.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <a class="brand" href="../index.html">GALACTIC CONQUEST</a>
+        <nav>
+          <a href="../privacy.html">Privacy</a>
+          <a href="../terms.html">Terms</a>
+          <a href="../delete-account.html">Delete account</a>
+          <a href="./" aria-current="page">Field Manual</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <h1>Field Manual</h1>
+      <p class="muted">Online help — synced with in-game Admiralty Records → Open Manual.</p>
+      <div id="manual-body" class="muted">Loading manual…</div>
+    </main>
+    <footer><p><a href="../index.html">← Back to home</a></p></footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      (async () => {
+        const el = document.getElementById("manual-body");
+        try {
+          const res = await fetch("../field-manual.md");
+          if (!res.ok) throw new Error(res.statusText);
+          const md = await res.text();
+          el.classList.remove("muted");
+          el.innerHTML = marked.parse(md, { gfm: true, breaks: false });
+        } catch (e) {
+          el.textContent = "Could not load the manual. Open field-manual.md from the repository.";
+          console.error(e);
+        }
+      })();
+    </script>
+  </body>
+</html>
